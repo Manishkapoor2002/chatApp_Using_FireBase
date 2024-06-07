@@ -2,11 +2,13 @@ import { useState, useRef } from "react"
 import { Auth } from "./components/auth"
 import Cookies from 'universal-cookie'
 import { Chat } from "./components/Chat"
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 const cookies = new Cookies()
+
+
 function App() {
   const [isAuth, setIsAuth] = useState<String | null>(cookies.get('auth-token'))
-  const [room, setRoom] = useState<String | Number | null |undefined>("");
-  const [username,setUsername] = useState<String | Number | null |undefined>("");
+  const [room, setRoom] = useState<String | Number | null | undefined>("");
   const roomInputRef = useRef<HTMLInputElement | null>(null);
   const UsernameInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -20,37 +22,67 @@ function App() {
   const handleSetRoom = () => {
     if (roomInputRef.current) {
       setRoom(roomInputRef.current.value);
-      setUsername(UsernameInputRef.current?.value)
     }
   }
 
   return <>
     <div>
       {
-        room ? (<div>
-          <Chat room={room} username={username}/>
+        room ? (<div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: "center",
+          alignItems: 'center'
+        }}>
+          <Chat room={room} />
           <button onClick={() => {
             cookies.set('auth-token', null);
             setIsAuth(null)
           }
-            }>Log out </button>
+          }>Log out </button>
         </div>)
-    : (<div>
-      <form onSubmit={handleSetRoom}>
-        <label htmlFor="">Enter Room Name : </label>
-        <input type="text" ref={roomInputRef} />
-        <br />
-        <br />
-        <label htmlFor="" > Enter User Name</label>
-        <input type="text"  ref={UsernameInputRef} />
-        <br />
-        <br />
-          
-        <button type="submit">Enter in Room</button>
-      </form>
-    </div>)
+          : (<Container
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100vh',
+              backgroundColor: '#f0f2f5',
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: '#fff',
+                padding: '30px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                width: '300px',
+              }}
+            >
+              <form onSubmit={handleSetRoom}>
+                <Typography variant="h6" gutterBottom>
+                  Enter Room Name:
+                </Typography>
+                <TextField
+                  inputRef={roomInputRef}
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
+                  Enter Room
+                </Button>
+              </form>
+            </Box>
+          </Container>
+      )
       }
-  </div ></>
+    </div ></>
 
 }
 
