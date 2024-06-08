@@ -110,11 +110,19 @@ export const Chat: React.FC<ChatProp> = ({ room }) => {
       height: '800px'
     }}>
 
-      <div style={{
+<div style={{
         display: 'flex',
         maxHeight: '75px',
         width: 'auto',
         marginBottom: '10px',
+        justifyContent: 'center'
+      }}>
+        <h1>Welcome : {currUsername.toString()} </h1>
+      </div>
+      <div style={{
+        display: 'flex',
+        maxHeight: '75px',
+        width: 'auto',
         justifyContent: 'center'
       }}>
         <h1>Chat Room: {room ? room.toString() : "Unknown Room"}</h1>
